@@ -13,7 +13,7 @@ class User(db.Model):
         db.String(100),
         unique=True,
         nullable=False
-    ),
+    )
     customerID = db.Column(
         db.String(100),
         nullable=False
