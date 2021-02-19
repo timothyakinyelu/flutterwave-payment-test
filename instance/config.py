@@ -7,6 +7,7 @@ class BaseConfig():
     SECRET_KEY = os.environ.get('SECRET_KEY')
     JSON_SORT_KEYS = False
     WTF_CSRF_ENABLED = True
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     
 class DevelopmentConfig(BaseConfig):
