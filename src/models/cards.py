@@ -10,7 +10,7 @@ class Card(db.Model):
         autoincrement=True
     )
     token = db.Column(
-        db.String(255)
+        db.String(255),
         nullable=False
     )
     card_type = db.Column(

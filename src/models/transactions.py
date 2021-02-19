@@ -19,7 +19,7 @@ class Transaction(db.Model):
         nullable=False
     )
     card_id = db.Column(
-        db.Integer
+        db.Integer,
         db.ForeignKey('cards.id')
     )
     currency = db.Column(

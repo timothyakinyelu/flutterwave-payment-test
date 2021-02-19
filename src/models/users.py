@@ -15,7 +15,7 @@ class User(db.Model):
         nullable=False
     ),
     customerID = db.Column(
-        db.String(100)
+        db.String(100),
         nullable=False
     )
     cards = db.relationship(
