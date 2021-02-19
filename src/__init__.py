@@ -239,6 +239,10 @@ def createApp():
     from src.models import cards, transactions, users, pivot
     
     with app.app_context():
+        # register app blueprints
+        from src.views.payments import payment
+        app.register_blueprint(payment)
+        
         db.create_all()
         return app;
     
