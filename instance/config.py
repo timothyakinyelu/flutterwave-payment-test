@@ -15,6 +15,7 @@ class DevelopmentConfig(BaseConfig):
     DEBUG = os.environ.get('DEBUG')
     TEMPLATES_AUTO_RELOAD = True
     SEC_KEY = os.environ.get('SEC_KEY')
+    MY_HASH = os.environ.get('MY_HASH')
     
 
 app_config = {
