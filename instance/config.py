@@ -16,6 +16,7 @@ class DevelopmentConfig(BaseConfig):
     TEMPLATES_AUTO_RELOAD = True
     SEC_KEY = os.environ.get('SEC_KEY')
     MY_HASH = os.environ.get('MY_HASH')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URI')
     
 
 app_config = {
