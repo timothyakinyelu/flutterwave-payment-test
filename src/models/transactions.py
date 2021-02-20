@@ -10,13 +10,11 @@ class Transaction(db.Model):
         autoincrement=True
     )
     transactionID = db.Column(
-        db.String(255),
-        nullable=False
+        db.String(255)
     )
     transactionRef = db.Column(
         db.String(255),
-        unique=True,
-        nullable=False
+        unique=True
     )
     card_id = db.Column(
         db.Integer,
