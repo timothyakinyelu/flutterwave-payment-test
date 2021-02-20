@@ -60,6 +60,9 @@ def payments():
             "currency": currency,
             "redirect_url": "http://localhost:5000/process",
             "payment_options": "card",
+            "meta":{
+                "reference": donationType
+            },
             "customer":{
                 "email": email,
                 "phonenumber": phone,
@@ -80,14 +83,6 @@ def payments():
         paymentURL = '{}/payments'.format(BaseUrl)
         
         try:
-            transaction = Transaction(
-                donation_type = donationType,
-                currency = currency,
-                payment_type = 'CARD',
-                amount = amount
-            )
-            transaction.save()
-            
             donate = requests.post(paymentURL, data=json.dumps(payload), headers=headers)
             response = donate.json()
             
