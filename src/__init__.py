@@ -7,7 +7,7 @@ import requests
 csrf = CSRFProtect()
 
 def createApp():
-    app = Flask(__name__, instance_relative_config=True)
+    app = Flask(__name__, instance_relative_config=True, template_folder='./templates')
     MODE = app.env
     Config = loadConfig(MODE)
     app.config.from_object(Config)
@@ -16,56 +16,6 @@ def createApp():
     db.init_app(app)
     csrf.init_app(app)
     
-    
-    @app.route('/')
-    def index():
-        ref = datetime.timestamp(datetime.now())
-    
-        percent_charge = 10
-        amount = 300
-        # merchant_charge = percent_charge/100
-        # merchant_fee = merchant_charge * amount
-        # subaccount_value = float(amount) - merchant_fee
-        
-        data = {
-            "tx_ref":ref,
-            "amount":amount,
-            "currency":"NGN",
-            "redirect_url":"http://localhost:5000/process",
-            "payment_options":"card",
-            "customer":{
-                "email":"user@gmail.com",
-                "phonenumber":"080****4528",
-                "name":"Trey Desola"
-            },
-            "subaccounts": [
-                {
-                    "id": "RS_91DD512FFC60A8EA0D6A3D6806692808"
-                }
-            ],
-            "customizations":{
-                "title":"Pied Piper Payments",
-                "description":"Middleout isn't free. Pay the price",
-                "logo":"https://assets.piedpiper.com/logo.png"
-            }
-        }
-        
-        headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer {}'.format(current_app.config['SEC_KEY'])
-        }
-        
-        res = requests.post('https://api.flutterwave.com/v3/payments',data=json.dumps(data), headers=headers)
-        
-        response = res.json()
-       
-        location = response['data']['link']
-        
-        if res.status_code and response['status'] == 'success':
-            return redirect(location)
-        else:
-            res = {'msg': 'Unable to process payment'}
-            return jsonify(res)
         
     @app.route('/process')
     def process():
@@ -240,8 +190,8 @@ def createApp():
     
     with app.app_context():
         # register app blueprints
-        from src.views.payments import payment
-        app.register_blueprint(payment)
+        from src.views.payments import payment_route
+        app.register_blueprint(payment_route.payment)
         
         db.create_all()
         return app;
