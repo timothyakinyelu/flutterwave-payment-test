@@ -1,4 +1,5 @@
 from flask import render_template, json, redirect, request, current_app, url_for, flash
+from src.models.transactions import Transaction
 from datetime import datetime
 import requests
 
@@ -79,6 +80,14 @@ def payments():
         paymentURL = '{}/payments'.format(BaseUrl)
         
         try:
+            transaction = Transaction(
+                donation_type = donationType,
+                currency = currency,
+                payment_type = 'CARD',
+                amount = amount
+            )
+            transaction.save()
+            
             donate = requests.post(paymentURL, data=json.dumps(payload), headers=headers)
             response = donate.json()
             
