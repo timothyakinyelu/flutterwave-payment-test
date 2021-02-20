@@ -18,11 +18,11 @@ def payments():
             res = requests.get(subAccountsURL, headers=headers)
             subAccounts = res.json()
             
-            if subAccounts:
-                return render_template('donations.html', vendors=subAccounts)
+            if subAccounts['data']:
+                return render_template('donations.html', vendors=subAccounts['data'])
             else:
                 flash('There are no vendors on this platform!')
-                return render_template('donations.html')
+                return render_template('donations.html', vendors=None)
         except Exception:
             pass
         
