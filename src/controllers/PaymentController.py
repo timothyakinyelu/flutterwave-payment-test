@@ -101,4 +101,33 @@ def payments():
             pass
         
         
-        
+def process_payment():
+    """ verify payment parameters"""
+    
+    if request.args.get('status'):
+        if request.args.get('status') == 'cancelled':
+            # if request is cancelled by user redirect to main page and flash message
+            
+            flash('You cancelled the payment!')
+            return redirect('payment.payment_view')
+        elif request.args.get('status') == 'successful':
+            # if request is successful, verify the transaction
+            
+            transactionID = request.args.get('transaction_id')
+            transactionRef = request.args.get('tx_ref')
+            url = '{}/transactions/{}/verify'.format(BaseUrl, transactionID)
+            
+            res = requests.get(url, headers=headers)
+            response = res.json()
+            
+            amountSettled = response['data']['amount_settled']
+            
+            if response['data']['tx_ref'] == transactionRef:
+                if amountSettled:
+                    return render_template('response.html', home=url_for('payment.payment_view'))
+                else:
+                    flash('Not enough funds to cover the transaction')
+                    return redirect('payment.payment_view')
+            else:
+                flash('Invalid Transaction')
+                return redirect('payment.payment_view')
