@@ -19,12 +19,6 @@ class Card(db.Model):
     card_expiry = db.Column(
         db.String(100)
     )
-    first_six_digits = db.Column(
-        db.String(100)
-    )
-    last_four_digits = db.Column(
-        db.String(100)
-    )
     country = db.Column(
         db.String(100)
     )
