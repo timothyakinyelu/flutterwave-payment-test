@@ -6,10 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-4.4.1-dist/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
     <title>Flutterwave payment gateway</title>
 </head>
 <body>
     <div class="d-flex flex-column">
+        {% include "navbar.html" %}
         {% block content %}{% endblock %}
     </div>
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
