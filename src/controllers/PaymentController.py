@@ -1,4 +1,4 @@
-from flask import render_template, json, redirect, request, current_app, url_for
+from flask import render_template, json, redirect, request, current_app, url_for, flash
 from datetime import datetime
 import requests
 
@@ -25,24 +25,49 @@ def payments():
                 return render_template('donations.html')
         except Exception:
             pass
-    
+        
     if request.method == 'POST':
         ref = datetime.timestamp(datetime.now())
         form = request.form
+        
+        fullName = '{} {}'.format(form.get('first_name'), form.get('last_name'))
+        email = form.get('email')
+        phone = form.get('phone')
+        currency = form.get('currency')
+        amount = form.get('amount')
+        subID = form.get('subaccountID')
+        donationType = form.get('donation_type')
+        
+        if int(amount) == False:
+            # check if the amount entered is an integer
+            flash('Amount must be a round figure!')
+            return redirect(url_for('payment.payment_view'))
+            
+        if not email:
+            #  check if email is provided
+            flash('Please enter a valid email!')
+            return redirect(url_for('payment.payment_view'))
+
+        if subID is None:
+            #  check if subID is provided
+            flash('Please a select a church to donate to!')
+            return redirect(url_for('payment.payment_view'))
+
+            
         payload = {
             "tx_ref": ref,
-            "amount": form.get('amount'),
-            "currency": form.get('currency'),
+            "amount": amount,
+            "currency": currency,
             "redirect_url": "http://localhost:5000/process",
             "payment_options": "card",
             "customer":{
-                "email": form.get('email'),
-                "phonenumber": form.get('phone'),
-                "name": form.get('full_name')
+                "email": email,
+                "phonenumber": phone,
+                "name": fullName
             },
             "subaccounts": [
                 {
-                    "id": form.get('subaccountID')
+                    "id": subID
                 }
             ],
             "customizations":{
@@ -66,5 +91,6 @@ def payments():
                 return redirect(url_for('paymentview.payment_view'))
         except Exception:
             pass
+        
         
         
