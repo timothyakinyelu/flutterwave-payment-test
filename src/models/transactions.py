@@ -22,6 +22,9 @@ class Transaction(db.Model):
         db.Integer,
         db.ForeignKey('cards.id')
     )
+    donation_type = db.Column(
+        db.String(30)
+    )
     currency = db.Column(
         db.String(12),
         nullable=False
