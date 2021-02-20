@@ -42,3 +42,16 @@ class Transaction(db.Model):
 
     def __repr__(self):
         return "<Transaction: {}>".format(self.transactionRef)
+    
+    def save(self):
+        """Commit model values to database"""
+        
+        db.session.add(self)
+        db.session.commit()
+        
+    @staticmethod
+    def get_all():
+        """ Fetch all Transactions from database"""
+        
+        return Transaction.query.all()
+        
