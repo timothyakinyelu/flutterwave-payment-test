@@ -11,7 +11,6 @@ headers = {
 
 def payments():
     """Method to fetch form and send payment request payload"""
-    
     if request.method == 'GET':
         try:
             subAccountsURL = '{}/subaccounts'.format(BaseUrl)
@@ -22,7 +21,7 @@ def payments():
                 return render_template('donations.html', vendors=subAccounts['data'])
             else:
                 flash('There are no vendors on this platform!')
-                return render_template('donations.html', vendors=None)
+                return render_template('donations.html')
         except Exception:
             pass
         
