@@ -13,7 +13,18 @@ def payments():
     """Method to fetch form and send payment request payload"""
     
     if request.method == 'GET':
-        pass
+        try:
+            subAccountsURL = '{}/subaccounts'.format(BaseUrl)
+            res = requests.get(subAccountsURL, headers=headers)
+            subAccounts = res.json()
+            
+            if subAccounts:
+                return render_template('donations.html', vendors=subAccounts)
+            else:
+                flash('There are no vendors on this platform!')
+                return render_template('donations.html')
+        except Exception:
+            pass
     
     if request.method == 'POST':
         ref = datetime.timestamp(datetime.now())
