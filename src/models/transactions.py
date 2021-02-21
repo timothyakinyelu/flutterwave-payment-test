@@ -11,6 +11,14 @@ class Transaction(db.Model):
         primary_key=True,
         autoincrement=True
     )
+    card_id = db.Column(
+        db.Integer,
+        db.ForeignKey('cards.id')
+    )
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id')
+    )
     transaction_ref = db.Column(
         db.String(255),
         unique=True
