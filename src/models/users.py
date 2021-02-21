@@ -2,6 +2,8 @@ from src.db import db
 from .pivot import card_user_table
 
 class User(db.Model):
+    """model representing users table."""
+    
     __tablename__ = 'users'
     
     id = db.Column(

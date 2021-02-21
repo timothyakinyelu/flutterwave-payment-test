@@ -2,6 +2,8 @@ from src.db import db
 
 
 class Card(db.Model):
+    """model representing cards table."""
+    
     __tablename__ = 'cards'
     
     id = db.Column(

@@ -2,6 +2,8 @@ from src.db import db
 
 
 class Transaction(db.Model):
+    """model representing transactions table."""
+    
     __tablename__ = 'transactions'
     
     id = db.Column(
