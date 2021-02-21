@@ -18,6 +18,11 @@ class User(db.Model):
         db.String(100),
         nullable=False
     )
+    transactions = db.relationship(
+        'Transaction', 
+        backref = 'user', 
+        lazy = 'joined'
+    )
     cards = db.relationship(
         'Card', 
         secondary = card_user_table, 

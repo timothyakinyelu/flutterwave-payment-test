@@ -20,6 +20,10 @@ class Transaction(db.Model):
         db.Integer,
         db.ForeignKey('cards.id')
     )
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id')
+    )
     donation_type = db.Column(
         db.String(30)
     )
