@@ -11,6 +11,7 @@ headers = {
     'Content-Type': 'application/json',
     'Authorization': 'Bearer {}'.format(current_app.config['SEC_KEY'])
 }
+WebDomain = 'http://localhost:5000'
 
 def payments():
     """Method to fetch form and send payment request payload"""
@@ -60,7 +61,7 @@ def payments():
             "tx_ref": ref,
             "amount": amount,
             "currency": currency,
-            "redirect_url": "http://localhost:5000/process",
+            "redirect_url": '{}{}'.format(WebDomain, url_for('payment.verification_view')),
             "payment_options": "card",
             "meta":{
                 "reference": donationType
