@@ -1,5 +1,4 @@
 from src.db import db
-from .pivot import card_user_table
 
 class User(db.Model):
     """model representing users table."""
@@ -14,6 +13,10 @@ class User(db.Model):
     email = db.Column(
         db.String(100),
         unique=True,
+        nullable=False
+    )
+    phone = db.Column(
+        db.String(50),
         nullable=False
     )
     customer_id = db.Column(
