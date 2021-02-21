@@ -17,39 +17,7 @@ def createApp():
     csrf.init_app(app)
     
         
-    @app.route('/process')
-    def process():
-        if request.args.get('status'):
-            if request.args.get('status') == 'cancelled':
-                res = {'msg': 'You cancelled the payment!'}
-                return jsonify(res)
-            elif request.args.get('status') == 'successful':
-                transactionID = request.args.get('transaction_id')
-                transactionRef = request.args.get('tx_ref')
-                url = 'https://api.flutterwave.com/v3/transactions/{}/verify'.format(transactionID)
-                
-                headers = {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer {}'.format(current_app.config['SEC_KEY'])
-                }
-                res = requests.get(url, headers=headers)
-                resp = res.json()
-                return resp
-                
-                # amountPaid = response['data']['charged_amount']
-                # amountRequired = response['data']['meta']['price']
-                
-                # if response['data']['tx_ref'] == transactionRef:
-                #     if amountPaid >= float(amountRequired):
-                #         res = {'msg': 'Payment Successful!'}
-                #     else:
-                #         res = {'msg': 'Not enough funds to cover the transaction'}
-                # else:
-                #     res = {'msg': 'Invalid Transaction'}
-                    
-                # return jsonify(res)
-          
-  
+    
     @app.route('/create-subaccount')
     def createSubAccount():
         data = { 
