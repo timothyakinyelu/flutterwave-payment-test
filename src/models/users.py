@@ -27,8 +27,7 @@ class User(db.Model):
     )
     cards = db.relationship(
         'Card', 
-        secondary = card_user_table, 
-        backref = 'users', 
+        backref = 'user', 
         lazy = 'joined'
     )
     
