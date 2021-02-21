@@ -11,37 +11,12 @@ class Transaction(db.Model):
         primary_key=True,
         autoincrement=True
     )
-    transactionID = db.Column(
-        db.String(255)
-    )
     transactionRef = db.Column(
         db.String(255),
         unique=True
     )
-    card_id = db.Column(
-        db.Integer,
-        db.ForeignKey('cards.id')
-    )
-    user_id = db.Column(
-        db.Integer,
-        db.ForeignKey('users.id')
-    )
-    donation_type = db.Column(
+    status = db.Column(
         db.String(30)
-    )
-    currency = db.Column(
-        db.String(12),
-        nullable=False
-    )
-    payment_type=db.Column(
-        db.String(30),
-        nullable=False
-    )
-    amount = db.Column(
-        db.Float
-    )
-    created_at = db.Column(
-        db.DateTime
     )
 
     def __repr__(self):
