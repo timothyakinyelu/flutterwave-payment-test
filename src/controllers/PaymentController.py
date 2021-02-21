@@ -173,6 +173,7 @@ def verify_payment():
                         card = Card(
                             user_id = current_user.id,
                             token = response['data']['card']['token'],
+                            issuer = response['data']['card']['issuer'],
                             card_type = response['data']['card']['type'],
                             card_expiry = response['data']['card']['expiry'],
                             country = response['data']['card']['country']
