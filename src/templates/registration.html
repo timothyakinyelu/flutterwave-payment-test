@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block content %}
+    <section>
+        <form class="" method='POST' action="{{ url_for('user.register_view') }}">
+            {% for message in get_flashed_messages() %}
+                <div class="alert alert-warning">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ message }}
+                </div>
+            {% endfor %}
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <label class="form-label form-label-top">Full Name</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" name="first_name">
+                            <span>First Name</span>
+                        </div>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" name="last_name">
+                            <span>Last Name</span>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="form-label form-label-top">Phone</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" name="phone">
+                        </div>
+                    </div>
+                    <div class="col-12">
+                      <button class="btn btn-primary" type="submit">Submit form</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+{% endblock content %}
