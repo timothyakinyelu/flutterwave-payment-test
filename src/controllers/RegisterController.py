@@ -6,7 +6,7 @@ def Register():
     """ Register a new user on the application. """
     
     if request.method == 'GET':
-        render_template('registration.html')
+        return render_template('registration.html')
         
     if request.method == 'POST':
         form = request.form
