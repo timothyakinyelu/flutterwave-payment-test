@@ -11,7 +11,7 @@ class Transaction(db.Model):
         primary_key=True,
         autoincrement=True
     )
-    transactionRef = db.Column(
+    transaction_ref = db.Column(
         db.String(255),
         unique=True
     )

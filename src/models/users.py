@@ -16,7 +16,7 @@ class User(db.Model):
         unique=True,
         nullable=False
     )
-    customerID = db.Column(
+    customer_id = db.Column(
         db.String(100),
         nullable=False
     )

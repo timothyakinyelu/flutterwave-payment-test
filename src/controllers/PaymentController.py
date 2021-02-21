@@ -135,14 +135,14 @@ def process_payment():
                     # store user details for login and charge with token use case
                     user = User(
                         email = response['data']['customer']['email'],
-                        customerID = response['data']['customer']['id']
+                        customer_id = response['data']['customer']['id']
                     )
                     user.cards.extend(card)
                     user.save()
                     
                     # store transaction ref to check if costumers have any issue with a payment
                     transaction = Transaction(
-                        transactionRef = transactionRef,
+                        transaction_ref = transactionRef,
                         status = response['data']['status']
                     )
                     transaction.save()
