@@ -3,6 +3,18 @@ from . import user
 from src.controllers import PaymentController
 
 
+class RegistrationView(MethodView):
+    """ Class to register a new user on the application"""
+    
+    def get(self):
+        """ Fetch new user form"""
+        pass
+
+    def post(self):
+        """ Submit new user form"""
+        pass
+
+
 class PaymentView(MethodView):
     """ Class handling customer payments to sub_accounts 
         through the main merchant account on Flutterwave.
@@ -30,10 +42,15 @@ class VerificationView(MethodView):
     
     
 # define API resources here
+register_view = RegistrationView.as_view('register_view')
 payment_view = PaymentView.as_view('payment_view')
 verification_view = VerificationView.as_view('verification_view')
 
 # register url_rule for endpoint
+user.add_url_rule(
+    '/register',
+    view_func=register_view
+)
 user.add_url_rule(
     '/payment',
     view_func=payment_view
