@@ -19,6 +19,9 @@ class Card(db.Model):
         db.String(255),
         nullable=False
     )
+    issuer = db.Column(
+        db.String(50)
+    )
     card_type = db.Column(
         db.String(100)
     )
