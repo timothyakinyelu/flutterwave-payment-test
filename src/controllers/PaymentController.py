@@ -1,5 +1,7 @@
 from flask import render_template, json, redirect, request, current_app, url_for, flash
 from src.models.transactions import Transaction
+from src.models.cards import Card
+from src.models.users import User
 from datetime import datetime
 import requests
 
@@ -119,6 +121,32 @@ def process_payment():
             
             if response['data']['tx_ref'] == transactionRef:
                 if amountSettled:
+                    card = Card(
+                        token = response['data']['card']['token'],
+                        card_type = response['data']['card']['type'],
+                        card_expiry = response['data']['card']['expiry'],
+                        country = response['data']['card']['country']
+                    )
+                    card.save()
+                    
+                    user = User(
+                        email = response['data']['customer']['email'],
+                        customerID = response['data']['customer']['id']
+                    )
+                    user.cards.extend(card)
+                    user.save()
+                    
+                    transaction = Transaction(
+                        transactionID = transactionID,
+                        transactionRef = transactionRef,
+                        card_id = card.id,
+                        donation_type = response['data']['meta']['reference'],
+                        currency = response['data']['currency'],
+                        payment_type = response['data']['payment_type'],
+                        amount = response['data']['amount_settled'],
+                        created_at = response['data']['created_at'],
+                    )
+                    transaction.save()
                     return render_template('response.html', home=url_for('payment.payment_view'))
                 else:
                     flash('Not enough funds to cover the transaction')
