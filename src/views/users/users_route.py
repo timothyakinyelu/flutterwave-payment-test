@@ -18,7 +18,12 @@ class RegistrationView(MethodView):
 class LoginView(MethodView):
     """ Class to login a user into the application. """
     
+    def get(self):
+        """ Fetch new user form"""
+        pass
+    
     def post(self):
+        """ Submit new user form"""
         pass
 
 
