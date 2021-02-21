@@ -1,6 +1,6 @@
 from flask.views import MethodView
 from . import user
-from src.controllers import PaymentController
+from src.controllers import PaymentController, RegisterController
 
 
 class RegistrationView(MethodView):
@@ -8,11 +8,11 @@ class RegistrationView(MethodView):
     
     def get(self):
         """ Fetch new user form"""
-        pass
+        return RegisterController.Register()
 
     def post(self):
         """ Submit new user form"""
-        pass
+        return RegisterController.Register()
 
 
 class PaymentView(MethodView):
