@@ -19,9 +19,11 @@ class User(db.Model):
         db.String(50),
         nullable=False
     )
+    full_name = db.Column(
+        db.String(100)
+    )
     customer_id = db.Column(
-        db.String(100),
-        nullable=False
+        db.String(100)
     )
     transactions = db.relationship(
         'Transaction', 
