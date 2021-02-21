@@ -2,8 +2,11 @@ from flask import Flask, jsonify, json, redirect, request, current_app
 from src.helpers.load_config import loadConfig
 from datetime import datetime
 from flask_wtf.csrf import CSRFProtect
+from flask_login import LoginManager
+from src.models.users import User
 import requests
 
+login_manager = LoginManager()
 csrf = CSRFProtect()
 
 def createApp():
@@ -15,8 +18,16 @@ def createApp():
     from src.db import db
     db.init_app(app)
     csrf.init_app(app)
+    login_manager.init_app(app)
     
+    @login_manager.user_loader
+    def load_user(user_id):
+        """Check if user is logged-in on every page load."""
         
+        if user_id is not None:
+            return User.query.get(user_id)
+        return None
+
     
     @app.route('/create-subaccount')
     def createSubAccount():
@@ -127,39 +138,17 @@ def createApp():
         
         return resp
     
-    
-    @app.route('/charge-token')
-    def remeberToken():
-        data = {
-            "token":"flw-t1nf-7ba64bb6ffd422f6a92a846f7a5de269-m03k",
-            "currency":"NGN",
-            "country":"NG",
-            "amount":200,
-            "email":"user@gmail.com",
-            "narration":"Sample tokenized charge",
-            "tx_ref":"1613693187.078396"
-        }
-        headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer {}'.format(current_app.config['SEC_KEY'])
-        }
-        fetchUrl = 'https://api.flutterwave.com/v3/tokenized-charges'
-        res = requests.post(fetchUrl, data=json.dumps(data), headers=headers)
-        response = res.json()
-        
-        return response
-    
     @app.route('/webhook', methods=['POST'])
     @csrf.exempt
     def webhook(request):
         pass
     
-    from src.models import cards, transactions, users, pivot
+    from src.models import cards, transactions, users
     
     with app.app_context():
         # register app blueprints
-        from src.views.payments import payment_route
-        app.register_blueprint(payment_route.payment)
+        from src.views.users import users_route
+        app.register_blueprint(users_route.user)
         
         db.create_all()
         return app;
