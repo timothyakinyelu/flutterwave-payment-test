@@ -27,3 +27,10 @@ class User(db.Model):
     
     def __repr__(self):
         return "<User: {}>".format(self.email)
+    
+    
+    def save(self):
+        """Commit model values to database"""
+        
+        db.session.add(self)
+        db.session.commit()

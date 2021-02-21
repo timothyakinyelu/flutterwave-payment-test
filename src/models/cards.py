@@ -27,3 +27,9 @@ class Card(db.Model):
         backref = 'card',
         lazy = 'joined'
     )
+    
+    def save(self):
+        """Commit model values to database"""
+        
+        db.session.add(self)
+        db.session.commit()
