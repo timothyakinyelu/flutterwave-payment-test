@@ -98,7 +98,7 @@ def payments():
             pass
         
         
-def process_payment():
+def verify_payment():
     """ verify payment parameters"""
     
     if request.args.get('status'):
