@@ -35,7 +35,7 @@ verification_view = VerificationView.as_view('verification_view')
 
 # register url_rule for endpoint
 payment.add_url_rule(
-    '/',
+    '/payment',
     view_func=payment_view
 )
 payment.add_url_rule(
