@@ -26,6 +26,9 @@ class Transaction(db.Model):
     status = db.Column(
         db.String(30)
     )
+    currency = db.Column(
+        db.String(30)
+    )
     amount = db.Column(
         db.Float
     )
