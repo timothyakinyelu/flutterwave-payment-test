@@ -26,3 +26,22 @@ def Register():
         
         return redirect(url_for('user.payment_view'))
         
+        
+def Login():
+    """ Login a user into the application. """
+    
+    if request.method == 'GET':
+        return render_template('login.html')
+    
+    if request.method == 'POST':
+        phone = request.form.get('phone')
+        
+        user = User.query.filter_by(phone = phone).first()
+        
+        if user:
+            login_user(user)
+            return redirect(url_for('user.payment_view'))
+        else:
+            flash('Phone number not recognized')
+            return redirect(url_for('user.login_view'))
+        
