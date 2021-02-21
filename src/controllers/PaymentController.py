@@ -121,6 +121,9 @@ def process_payment():
             
             if response['data']['tx_ref'] == transactionRef:
                 if amountSettled:
+                    # store card token generated in order to carry out future payments 
+                    # via the token instead of user entering card details
+                    # user can be recognised on login to the app
                     card = Card(
                         token = response['data']['card']['token'],
                         card_type = response['data']['card']['type'],
@@ -129,6 +132,7 @@ def process_payment():
                     )
                     card.save()
                     
+                    # store user details for login and charge with token use case
                     user = User(
                         email = response['data']['customer']['email'],
                         customerID = response['data']['customer']['id']
@@ -136,17 +140,13 @@ def process_payment():
                     user.cards.extend(card)
                     user.save()
                     
+                    # store transaction ref to check if costumers have any issue with a payment
                     transaction = Transaction(
-                        transactionID = transactionID,
                         transactionRef = transactionRef,
-                        card_id = card.id,
-                        donation_type = response['data']['meta']['reference'],
-                        currency = response['data']['currency'],
-                        payment_type = response['data']['payment_type'],
-                        amount = response['data']['amount_settled'],
-                        created_at = response['data']['created_at'],
+                        status = response['data']['status']
                     )
                     transaction.save()
+                    
                     return render_template('response.html', home=url_for('payment.payment_view'))
                 else:
                     flash('Not enough funds to cover the transaction')
