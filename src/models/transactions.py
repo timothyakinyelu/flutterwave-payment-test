@@ -35,7 +35,7 @@ class Transaction(db.Model):
         db.Float
     )
     created_at = db.Column(
-        db.String(255)
+        db.DateTime
     )
 
     def __repr__(self):
