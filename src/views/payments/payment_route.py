@@ -20,12 +20,26 @@ class PaymentView(MethodView):
         """
         return PaymentController.payments()
     
+
+class VerificationView(MethodView):
+    """ Verify payment parameters. """
+    
+    def get(self):
+        """ Get redirect url included in transaction request payload."""
+        return PaymentController.verify_payment()
+    
+    
 # define API resources here
 payment_view = PaymentView.as_view('payment_view')
+verification_view = VerificationView.as_view('verification_view')
 
 # register url_rule for endpoint
 payment.add_url_rule(
     '/',
     view_func=payment_view
+)
+payment.add_url_rule(
+    '/verify_transaction',
+    view_func=verification_view
 )
 
