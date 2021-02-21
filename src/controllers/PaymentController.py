@@ -138,11 +138,13 @@ def verify_payment():
                         email = response['data']['customer']['email'],
                         customer_id = response['data']['customer']['id']
                     )
-                    user.cards.extend(card)
+                    user.cards.append(card)
                     user.save()
                     
                     # store transaction ref to check if costumers have any issue with a payment
                     transaction = Transaction(
+                        card_id = card.id,
+                        user_id = user.id,
                         transaction_ref = transactionRef,
                         status = response['data']['status']
                     )
