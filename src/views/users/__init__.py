@@ -2,4 +2,4 @@
 
 from flask import Blueprint
 
-payment = Blueprint('payment', __name__)
+user = Blueprint('user', __name__)

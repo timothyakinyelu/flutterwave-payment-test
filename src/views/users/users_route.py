@@ -1,5 +1,5 @@
 from flask.views import MethodView
-from . import payment
+from . import user
 from src.controllers import PaymentController
 
 
@@ -34,11 +34,11 @@ payment_view = PaymentView.as_view('payment_view')
 verification_view = VerificationView.as_view('verification_view')
 
 # register url_rule for endpoint
-payment.add_url_rule(
+user.add_url_rule(
     '/payment',
     view_func=payment_view
 )
-payment.add_url_rule(
+user.add_url_rule(
     '/verify_transaction',
     view_func=verification_view
 )
