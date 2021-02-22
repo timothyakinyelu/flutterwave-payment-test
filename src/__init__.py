@@ -148,7 +148,10 @@ def createApp():
     with app.app_context():
         # register app blueprints
         from src.views.users import users_route
+        from src.views.admin import admin_route
+        
         app.register_blueprint(users_route.user)
+        app.register_blueprint(admin_route.admin)
         
         db.create_all()
         return app;
