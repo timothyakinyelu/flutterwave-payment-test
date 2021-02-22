@@ -3,7 +3,6 @@ from src.helpers.load_config import loadConfig
 from datetime import datetime
 from flask_wtf.csrf import CSRFProtect
 from flask_login import LoginManager
-from src.models.users import User
 import requests
 
 login_manager = LoginManager()
@@ -19,17 +18,8 @@ def createApp():
     db.init_app(app)
     csrf.init_app(app)
     login_manager.init_app(app)
-    
-    @login_manager.user_loader
-    def load_user(user_id):
-        """Check if user is logged-in on every page load."""
-        
-        if user_id is not None:
-            return User.query.get(user_id)
-        return None
 
         
-
     @app.route('/update-subaccount/<int:id>')
     def updateSubAccount(id):
         data = {
@@ -95,6 +85,14 @@ def createApp():
         pass
     
     from src.models import cards, transactions, users
+    
+    @login_manager.user_loader
+    def load_user(user_id):
+        """Check if user is logged-in on every page load."""
+        
+        if user_id is not None:
+            return users.User.query.get(user_id)
+        return None
     
     with app.app_context():
         # register app blueprints
