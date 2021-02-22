@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block content %}
+    <section>
+        {% for d in data %}
+            <h3>New SubAccount info</h3>
+            <p>account_bank: {{ d.account_bank }}</p>
+            <p>account_number: {{ d.account_number }}</p>
+            <p>business_name: {{ d.business_name }}</p>
+            <p>business_email: {{ d.business_email }}</p>
+            <p>business_contact: {{ d.business_contact }}</p>
+            <p>business_contact_mobile: {{ d.business_contact_mobile }}</p>
+            <p>business_mobile: {{ d.business_mobile }}</p>
+            <p>country: {{ d.country }}</p>
+            <p>split_type: {{ d.split_type }}</p>
+            <p>split_value: {{ d.split_value }}</p>
+        {% endfor %}
+    </section>
+{% endblock content %}
