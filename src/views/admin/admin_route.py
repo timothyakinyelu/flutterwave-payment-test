@@ -20,7 +20,7 @@ class VendorView(MethodView):
     
     def post(self):
         """Submit vendor creation form"""
-        pass
+        return AdminController.create_vendor()
     
       
 # define API resources
