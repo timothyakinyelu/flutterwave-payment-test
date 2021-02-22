@@ -58,4 +58,4 @@ def create_vendor():
             return redirect(url_for('admin.allvendors_view'))
         else:
             flash(response['message'])
-            return redirect(url_for('admin.vendor_view'))
+            return redirect(url_for('admin.vendors_view'))
