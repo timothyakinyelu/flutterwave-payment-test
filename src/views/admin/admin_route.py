@@ -1,5 +1,6 @@
 from flask.views import MethodView
 from . import admin
+from src.controllers import AdminController
 
 
 class Admin_view(MethodView):
@@ -7,7 +8,7 @@ class Admin_view(MethodView):
     
     def get(self):
         """ Fetch template holding buttons to fetch other admin views of forms"""
-        pass
+        return AdminController.admin()
     
     
 # define API resources
