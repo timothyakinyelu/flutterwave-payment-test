@@ -20,6 +20,15 @@ class DevelopmentConfig(BaseConfig):
     SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URI')
     
 
+class StagingConfig(BaseConfig):
+    """ Config for staging environment."""
+    
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+    DEBUG = True
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+    
+
 app_config = {
-    'development': DevelopmentConfig
+    'development': DevelopmentConfig,
+    'staging': StagingConfig
 }
