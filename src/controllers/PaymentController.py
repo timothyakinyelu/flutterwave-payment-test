@@ -22,8 +22,10 @@ def payments():
             res = requests.get(subAccountsURL, headers=headers)
             subAccounts = res.json()
             
+            cards = current_user.cards
+            
             if subAccounts['data']:
-                return render_template('donations.html', vendors=subAccounts['data'])
+                return render_template('donations.html', vendors=subAccounts['data'], cards=cards)
             else:
                 flash('There are no vendors on this platform!')
                 return render_template('donations.html')
@@ -38,16 +40,11 @@ def payments():
         amount = form.get('amount')
         subID = form.get('subaccountID')
         donationType = form.get('donation_type')
-        retainedCard = form.get('retained_card')
+        retainedCard = form.get('retainedCard')
         
         if int(amount) == False:
             # check if the amount entered is an integer
             flash('Amount must be a round figure!')
-            return redirect(url_for('payment.payment_view'))
-            
-        if not email:
-            #  check if email is provided
-            flash('Please enter a valid email!')
             return redirect(url_for('payment.payment_view'))
 
         if subID is None:
@@ -59,7 +56,7 @@ def payments():
         if  retainedCard == '1':
             # existing user can be gotten if a login system is used
             # if user exists, charge user with token instead
-            card_id = form.get('card_id')
+            card_id = form.get('card')
             card = Card.query.filter_by(id = card_id).first()
             country = card.country
             
@@ -89,14 +86,14 @@ def payments():
             # store transaction ref to check if costumers have any issue with a payment
             transaction = Transaction(
                 card_id = card.id,
-                user_id = user.id,
-                transaction_ref = transactionRef,
+                user_id = current_user.id,
+                transaction_ref = response['data']['tx_ref'],
                 status = response['data']['status'],
                 amount = response['data']['amount']
             )
             transaction.save()
             
-            return render_template('response.html', home=url_for('user.verification_view'))
+            return render_template('response.html', home=url_for('user.payment_view'))
         else:   
             # only use if it's a new user or new card
             payload = {
