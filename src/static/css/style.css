@@ -18,3 +18,16 @@ ul.navbar-nav {
     margin-left: 2px;
     margin-bottom: 14px;
 }
+.form-check.cards label{
+    font-size: 1.3em;
+    margin-left: 0.5em;
+}
+.form-check.cards input[type=radio]{
+    transform:scale(1.5);
+}
+.form-check.cards .form-check-input {
+    position: relative;
+}
+.cards-inner {
+    margin-left: 30px;
+}
