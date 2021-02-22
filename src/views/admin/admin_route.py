@@ -27,7 +27,7 @@ class AllVendorsView(MethodView):
     """ Fetch all vendors"""
     
     def get(self):
-        pass
+        return AdminController.vendors()
     
     
 # define API resources
