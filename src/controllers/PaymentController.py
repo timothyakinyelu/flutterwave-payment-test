@@ -180,6 +180,24 @@ def verify_payment():
                             country = response['data']['card']['country']
                         )
                         new_card.save()
+                        
+                        transaction = Transaction(
+                            card_id = new_card.id,
+                            user_id = current_user.id,
+                            transaction_ref = transactionRef,
+                            status = response['data']['status'],
+                            amount = response['data']['amount_settled']
+                        )
+                    else:   
+                        # store transaction ref to check if costumers have any issue with a payment
+                        transaction = Transaction(
+                            card_id = card.id,
+                            user_id = current_user.id,
+                            transaction_ref = transactionRef,
+                            status = response['data']['status'],
+                            amount = response['data']['amount_settled']
+                        )
+                    transaction.save()
                     
                     
                     if current_user.customer_id is None:
@@ -189,16 +207,6 @@ def verify_payment():
     
                         user.save()
                     
-                    
-                    # store transaction ref to check if costumers have any issue with a payment
-                    new_transaction = Transaction(
-                        card_id = card.id,
-                        user_id = current_user.id,
-                        transaction_ref = transactionRef,
-                        status = response['data']['status'],
-                        amount = response['data']['amount_settled']
-                    )
-                    new_transaction.save()
                     
                     return render_template('response.html', home=url_for('user.payment_view'))
                 else:
