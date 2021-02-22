@@ -21,10 +21,14 @@ def create_vendor():
     
     if request.method == 'GET':        
         banksUrl = '{}/banks/NG'.format(BaseUrl)
-        response = requests.get(banksUrl, headers=headers)
-        banks = response.json()
         
-        return render_template('create_subaccounts.html', banks=banks['data'])
+        try:
+            response = requests.get(banksUrl, headers=headers)
+            banks = response.json()
+            
+            return render_template('create_subaccounts.html', banks=banks['data'])
+        except Exception:
+            pass
     
     if request.method == 'POST':
         form = request.form
@@ -51,11 +55,28 @@ def create_vendor():
         
         subUrl = '{}/subaccounts'.format(BaseUrl)
         
-        res = requests.post(subUrl, data=json.dumps(payload), headers=headers)
-        response = res.json()
+        try:
+            res = requests.post(subUrl, data=json.dumps(payload), headers=headers)
+            response = res.json()
+            
+            if response['status'] == 'success':
+                return redirect(url_for('admin.allvendors_view'))
+            else:
+                flash(response['message'])
+                return redirect(url_for('admin.vendors_view'))
+        except Exception:
+            pass
         
-        if response['status'] == 'success':
-            return redirect(url_for('admin.allvendors_view'))
-        else:
-            flash(response['message'])
-            return redirect(url_for('admin.vendors_view'))
+        
+def vendors():
+    """ Get all vendors registered under main account"""
+    
+    try:
+        subUrl = '{}/subaccounts'.format(BaseUrl)
+        
+        resp = requests.get(subUrl, headers=headers)
+        response = resp.json()
+        
+        return render_template('subaccounts.html', data=response['data'])
+    except Exception:
+        pass
