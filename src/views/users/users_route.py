@@ -20,11 +20,11 @@ class LoginView(MethodView):
     
     def get(self):
         """ Fetch new user form"""
-        pass
+        return UserController.Login()
     
     def post(self):
         """ Submit new user form"""
-        pass
+        return UserController.Login()
 
 
 
