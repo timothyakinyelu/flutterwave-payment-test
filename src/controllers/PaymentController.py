@@ -164,11 +164,15 @@ def verify_payment():
                     # store card token generated in order to carry out future payments 
                     # via the token instead of user entering card details
                     # user can be recognised on login to the app
-                    card = Card.query.filter_by(token = response['data']['card']['token']).first()
+                    firstSix = response['data']['card']['first_6digits']
+                    lastFour = response['data']['card']['last_4digits']
+                    card = Card.query.filter_by(first_six = firstSix, last_four = lastFour).first()
                     
                     if card is None:
                         card = Card(
                             user_id = current_user.id,
+                            first_six = firstSix,
+                            last_four = lastFour,
                             token = response['data']['card']['token'],
                             issuer = response['data']['card']['issuer'],
                             card_type = response['data']['card']['type'],
