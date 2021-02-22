@@ -13,8 +13,7 @@ class User(db.Model, UserMixin):
     )
     email = db.Column(
         db.String(100),
-        unique=True,
-        nullable=False
+        unique=True
     )
     phone = db.Column(
         db.String(50),
