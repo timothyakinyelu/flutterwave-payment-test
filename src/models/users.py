@@ -1,6 +1,7 @@
 from src.db import db
+from flask_login import UserMixin
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     """model representing users table."""
     
     __tablename__ = 'users'
