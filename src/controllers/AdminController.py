@@ -60,11 +60,12 @@ def create_vendor():
             response = res.json()
             
             if response['status'] == 'success':
-                return redirect(url_for('admin.allvendors_view'))
+                return redirect(url_for('admin.all_vendors_view'))
             else:
                 flash(response['message'])
-                return redirect(url_for('admin.vendors_view'))
-        except Exception:
+                return redirect(url_for('admin.vendor_view'))
+        except Exception as e:
+            print(str(e))
             pass
         
         
