@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% block content %}
+    <section>
+        <form class="" method='POST' action="{{ url_for('user.payment_view') }}">
+            {% for message in get_flashed_messages() %}
+                <div class="alert alert-warning">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ message }}
+                </div>
+            {% endfor %}
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <div class="card">
+                <div class="card-body">
+                    <h2>Create a Vendor Account</h2>
+
+                    <div class="col-md-6">
+                        <label for="inputBank" class="form-label">Banks</label>
+                        <select id="inputBank" class="form-select" name="bank_code">
+                            <option selected>Select your bank...</option>
+                            {% for bank in banks %}
+                                <option value="{{ bank.code }}">{{ bank.name }}</option>
+                            {% endfor %}
+                        </select>
+                        </br>
+                        <strong style="font-size: 1em;">For testing please select ACCESS BANK</strong>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputAccount" class="form-label">Account Number</label>
+                        <input type="text" class="form-control" name="account_number" id="inputAccount">
+                        <strong>increment the last digit of this number for test accounts <span style="color: red;">0690000031</span>
+                        </strong>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputBname" class="form-label">Business Name</label>
+                        <input type="text" class="form-control" name="business_name" id="inputBname">
+                    </div>
+                    <div class="col-12">
+                        <label for="inputEmail" class="form-label">Business Email</label>
+                        <input type="email" class="form-control" name="business_email" id="inputEmail" placeholder="">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputBphone" class="form-label">Business Mobile</label>
+                        <input type="text" class="form-control" name="business_mobile" id="inputBphone">
+                    </div>
+                    <div class="col-12">
+                        <label for="inputCperson" class="form-label">Contact Person</label>
+                        <input type="text" class="form-control" name="contact_person" id="inputCperson" placeholder="">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputCmobile" class="form-label">Contact Mobile</label>
+                        <input type="text" class="form-control" name="contact_mobile" id="inputCmobile">
+                    </div>
+                    <div class="col-12">
+                      <button class="btn btn-primary" type="submit">Submit form</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+{% endblock content%}
