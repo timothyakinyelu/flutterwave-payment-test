@@ -12,7 +12,7 @@ headers = {
     'Content-Type': 'application/json',
     'Authorization': 'Bearer {}'.format(current_app.config['SEC_KEY'])
 }
-WebDomain = 'http://localhost:5000'
+WebDomain = 'https://flw-test.herokuapp.com/'
 
 def payments():
     """Method to fetch form and send payment request payload"""
