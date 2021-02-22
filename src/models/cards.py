@@ -15,6 +15,12 @@ class Card(db.Model):
         db.Integer,
         db.ForeignKey('users.id')
     )
+    first_six = db.Column(
+        db.String(30)
+    )
+    last_four = db.Column(
+        db.String(30)
+    )
     token = db.Column(
         db.String(255),
         nullable=False
