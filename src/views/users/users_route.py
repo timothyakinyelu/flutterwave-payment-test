@@ -1,6 +1,8 @@
 from flask.views import MethodView
 from . import user
 from src.controllers import PaymentController, UserController
+from flask_login import logout_user
+from flask import redirect, url_for
 
 
 class RegistrationView(MethodView):
@@ -53,12 +55,20 @@ class VerificationView(MethodView):
         """ Get redirect url included in transaction request payload."""
         return PaymentController.verify_payment()
     
+class LogoutView(MethodView):
+    """ Logout user"""
+    
+    def get(self):
+        logout_user()
+        return redirect(url_for('user.login_view'))
+    
     
 # define API resources here
 register_view = RegistrationView.as_view('register_view')
 login_view = LoginView.as_view('login_view')
 payment_view = PaymentView.as_view('payment_view')
 verification_view = VerificationView.as_view('verification_view')
+logout_view = LogoutView.as_view('logout_view')
 
 # register url_rule for endpoint
 user.add_url_rule(
@@ -76,5 +86,9 @@ user.add_url_rule(
 user.add_url_rule(
     '/verify_transaction',
     view_func=verification_view
+)
+user.add_url_rule(
+    '/logout',
+    view_func=logout_view
 )
 
