@@ -23,9 +23,17 @@ class VendorView(MethodView):
         return AdminController.create_vendor()
     
       
+class AllVendorsView(MethodView):
+    """ Fetch all vendors"""
+    
+    def get(self):
+        pass
+    
+    
 # define API resources
 admin_view = Admin_view.as_view('admin_view')
 vendor_view = VendorView.as_view('vendor_view')
+all_vendors_view = AllVendorsView.as_view('all_vendors_view')
 
 # add url_rule for endpoints
 admin.add_url_rule(
@@ -35,4 +43,8 @@ admin.add_url_rule(
 admin.add_url_rule(
     '/create-vendor',
     view_func=vendor_view
+)
+admin.add_url_rule(
+    '/subaccounts',
+    view_func=all_vendors_view
 )
