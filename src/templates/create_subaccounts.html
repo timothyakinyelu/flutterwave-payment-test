@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
     <section>
-        <form class="" method='POST' action="{{ url_for('user.payment_view') }}">
+        <form class="" method='POST' action="{{ url_for('admin.vendor_view') }}">
             {% for message in get_flashed_messages() %}
                 <div class="alert alert-warning">
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -13,7 +13,7 @@
                 <div class="card-body">
                     <h2>Create a Vendor Account</h2>
 
-                    <div class="col-md-6">
+                    <!-- <div class="col-md-6">
                         <label for="inputBank" class="form-label">Banks</label>
                         <select id="inputBank" class="form-select" name="bank_code">
                             <option selected>Select your bank...</option>
@@ -23,6 +23,12 @@
                         </select>
                         </br>
                         <strong style="font-size: 1em;">For testing please select ACCESS BANK</strong>
+                    </div> -->
+                    <div class="col-md-6">
+                        <label for="inputAccount" class="form-label">Bank</label>
+                        <input type="text" class="form-control" name="bank_code" id="inputAccount" value="044" readonly>
+                        <strong>In production you can get a list of banks and there code using the flutterwave API
+                        </strong>
                     </div>
                     <div class="col-md-6">
                         <label for="inputAccount" class="form-label">Account Number</label>
@@ -34,7 +40,7 @@
                         <label for="inputBname" class="form-label">Business Name</label>
                         <input type="text" class="form-control" name="business_name" id="inputBname">
                     </div>
-                    <div class="col-12">
+                    <div class="col-md-6">
                         <label for="inputEmail" class="form-label">Business Email</label>
                         <input type="email" class="form-control" name="business_email" id="inputEmail" placeholder="">
                     </div>
@@ -42,7 +48,7 @@
                         <label for="inputBphone" class="form-label">Business Mobile</label>
                         <input type="text" class="form-control" name="business_mobile" id="inputBphone">
                     </div>
-                    <div class="col-12">
+                    <div class="col-md-6">
                         <label for="inputCperson" class="form-label">Contact Person</label>
                         <input type="text" class="form-control" name="contact_person" id="inputCperson" placeholder="">
                     </div>
