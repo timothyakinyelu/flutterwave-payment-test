@@ -1,4 +1,4 @@
-from flask import render_template, url_for, request, current_app
+from flask import render_template, url_for, request, current_app, json, flash, redirect
 import requests
 
 
@@ -30,7 +30,7 @@ def create_vendor():
         form = request.form
         code = form.get('bank_code')
         number = form.get('account_number')
-        name = form.get('business name')
+        name = form.get('business_name')
         email = form.get('business_email')
         phone = form.get('business_mobile')
         contact = form.get('contact_person')
@@ -54,4 +54,8 @@ def create_vendor():
         res = requests.post(subUrl, data=json.dumps(payload), headers=headers)
         response = res.json()
         
-        return response
+        if response['status'] == 'success':
+            return redirect(url_for('admin.allvendors_view'))
+        else:
+            flash(response['message'])
+            return redirect(url_for('admin.vendor_view'))
