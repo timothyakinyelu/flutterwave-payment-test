@@ -12,7 +12,7 @@ def Register():
         form = request.form
         
         phone = form.get('phone')
-        email = form.get('email')
+        email = '{}@example.com'.format(form.get('phone'))
         firstName = form.get('first_name')
         lastName = form.get('last_name')
         
