@@ -167,7 +167,7 @@ def verify_payment():
                     card = Card.query.filter_by(token = response['data']['card']['token']).first()
                     
                     if card is None:
-                        card = Card(
+                        new_card = Card(
                             user_id = current_user.id,
                             token = response['data']['card']['token'],
                             issuer = response['data']['card']['issuer'],
@@ -175,25 +175,26 @@ def verify_payment():
                             card_expiry = response['data']['card']['expiry'],
                             country = response['data']['card']['country']
                         )
-                        card.save()
+                        new_card.save()
                     
                     
                     if current_user.customer_id is None:
                         # update user table with customer_id
-                        current_user.customer_id = response['data']['customer']['id']
+                        user = User.query.filter_by(id = current_user.id).first()
+                        user.customer_id = response['data']['customer']['id']
     
-                        current_user.save()
+                        user.save()
                     
                     
                     # store transaction ref to check if costumers have any issue with a payment
-                    transaction = Transaction(
+                    new_transaction = Transaction(
                         card_id = card.id,
                         user_id = current_user.id,
                         transaction_ref = transactionRef,
                         status = response['data']['status'],
                         amount = response['data']['amount_settled']
                     )
-                    transaction.save()
+                    new_transaction.save()
                     
                     return render_template('response.html', home=url_for('user.payment_view'))
                 else:
