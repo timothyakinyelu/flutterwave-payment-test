@@ -27,13 +27,23 @@ class AllVendorsView(MethodView):
     """ Fetch all vendors"""
     
     def get(self):
+        """ get request to call vendors method"""
         return AdminController.vendors()
+    
+    
+class SettlementsView(MethodView):
+    """ Fetch all settlements"""
+    
+    def get(self):
+        """get request to call settlements method"""
+        return AdminController.settlements()
     
     
 # define API resources
 admin_view = Admin_view.as_view('admin_view')
 vendor_view = VendorView.as_view('vendor_view')
 all_vendors_view = AllVendorsView.as_view('all_vendors_view')
+settlements_view = SettlementsView.as_view('settlements_view')
 
 # add url_rule for endpoints
 admin.add_url_rule(
@@ -47,4 +57,8 @@ admin.add_url_rule(
 admin.add_url_rule(
     '/subaccounts',
     view_func=all_vendors_view
+)
+admin.add_url_rule(
+    '/settlements',
+    view_func=settlements_view
 )

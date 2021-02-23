@@ -80,20 +80,23 @@ def payments():
             }
             
             tokenUrl = '{}/tokenized-charges'.format(BaseUrl)
-            res = requests.post(tokenUrl, data=json.dumps(data), headers=headers)
-            response = res.json()
-            
-            # store transaction ref to check if costumers have any issue with a payment
-            transaction = Transaction(
-                card_id = card.id,
-                user_id = current_user.id,
-                transaction_ref = response['data']['tx_ref'],
-                status = response['data']['status'],
-                amount = response['data']['amount']
-            )
-            transaction.save()
-            
-            return render_template('response.html', home=url_for('user.payment_view'))
+            try:
+                res = requests.post(tokenUrl, data=json.dumps(data), headers=headers)
+                response = res.json()
+                
+                # store transaction ref to check if costumers have any issue with a payment
+                transaction = Transaction(
+                    card_id = card.id,
+                    user_id = current_user.id,
+                    transaction_ref = response['data']['tx_ref'],
+                    status = response['data']['status'],
+                    amount = response['data']['amount']
+                )
+                transaction.save()
+                
+                return render_template('response.html', home=url_for('user.payment_view'))
+            except Exception:
+                pass
         else:   
             # only use if it's a new user or new card
             payload = {
@@ -154,64 +157,66 @@ def verify_payment():
             transactionRef = request.args.get('tx_ref')
             url = '{}/transactions/{}/verify'.format(BaseUrl, transactionID)
             
-            res = requests.get(url, headers=headers)
-            response = res.json()
-            
-            amountSettled = response['data']['amount_settled']
-            
-            if response['data']['tx_ref'] == transactionRef:
-                if amountSettled:
-                    # store card token generated in order to carry out future payments 
-                    # via the token instead of user entering card details
-                    # user can be recognised on login to the app
-                    firstSix = response['data']['card']['first_6digits']
-                    lastFour = response['data']['card']['last_4digits']
-                    card = Card.query.filter_by(first_six = firstSix, last_four = lastFour).first()
-                    
-                    if card is None:
-                        new_card = Card(
-                            user_id = current_user.id,
-                            first_six = firstSix,
-                            last_four = lastFour,
-                            token = response['data']['card']['token'],
-                            issuer = response['data']['card']['issuer'],
-                            card_type = response['data']['card']['type'],
-                            card_expiry = response['data']['card']['expiry'],
-                            country = response['data']['card']['country']
-                        )
-                        new_card.save()
+            try:
+                res = requests.get(url, headers=headers)
+                response = res.json()
+                
+                amountSettled = response['data']['amount_settled']
+                
+                if response['data']['tx_ref'] == transactionRef:
+                    if amountSettled:
+                        # store card token generated in order to carry out future payments 
+                        # via the token instead of user entering card details
+                        # user can be recognised on login to the app
+                        firstSix = response['data']['card']['first_6digits']
+                        lastFour = response['data']['card']['last_4digits']
+                        card = Card.query.filter_by(first_six = firstSix, last_four = lastFour).first()
                         
-                        transaction = Transaction(
-                            card_id = new_card.id,
-                            user_id = current_user.id,
-                            transaction_ref = transactionRef,
-                            status = response['data']['status'],
-                            amount = response['data']['amount_settled']
-                        )
-                    else:   
-                        # store transaction ref to check if costumers have any issue with a payment
-                        transaction = Transaction(
-                            card_id = card.id,
-                            user_id = current_user.id,
-                            transaction_ref = transactionRef,
-                            status = response['data']['status'],
-                            amount = response['data']['amount_settled']
-                        )
-                    transaction.save()
-                    
-                    
-                    if current_user.customer_id is None:
-                        # update user table with customer_id
-                        user = User.query.filter_by(id = current_user.id).first()
-                        user.customer_id = response['data']['customer']['id']
-    
-                        user.save()
-                    
-                    
-                    return render_template('response.html', home=url_for('user.payment_view'))
+                        if card is None:
+                            new_card = Card(
+                                user_id = current_user.id,
+                                first_six = firstSix,
+                                last_four = lastFour,
+                                token = response['data']['card']['token'],
+                                issuer = response['data']['card']['issuer'],
+                                card_type = response['data']['card']['type'],
+                                card_expiry = response['data']['card']['expiry'],
+                                country = response['data']['card']['country']
+                            )
+                            new_card.save()
+                            
+                            transaction = Transaction(
+                                card_id = new_card.id,
+                                user_id = current_user.id,
+                                transaction_ref = transactionRef,
+                                status = response['data']['status'],
+                                amount = response['data']['amount_settled']
+                            )
+                        else:   
+                            # store transaction ref to check if costumers have any issue with a payment
+                            transaction = Transaction(
+                                card_id = card.id,
+                                user_id = current_user.id,
+                                transaction_ref = transactionRef,
+                                status = response['data']['status'],
+                                amount = response['data']['amount_settled']
+                            )
+                        transaction.save()
+                        
+                        
+                        if current_user.customer_id is None:
+                            # update user table with customer_id
+                            current_user.customer_id = response['data']['customer']['id']
+        
+                            current_user.save()
+                        
+                        
+                        return response
+                    else:
+                        flash('Not enough funds to cover the transaction')
+                        return redirect('user.payment_view')
                 else:
-                    flash('Not enough funds to cover the transaction')
+                    flash('Invalid Transaction')
                     return redirect('user.payment_view')
-            else:
-                flash('Invalid Transaction')
-                return redirect('user.payment_view')
+            except Exception:
+                pass

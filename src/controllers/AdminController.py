@@ -78,6 +78,19 @@ def vendors():
         resp = requests.get(subUrl, headers=headers)
         response = resp.json()
         
-        return render_template('subaccounts.html', data=response['data'])
+        return response
+    except Exception:
+        pass
+    
+    
+def settlements():
+    """ Fetch all settlements per day"""
+    
+    try:
+        settlementsUrl = '{}/settlements'.format(BaseUrl)
+        resp = requests.get(settlementsUrl, headers=headers)
+        response = resp.json()
+        
+        return response
     except Exception:
         pass
