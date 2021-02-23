@@ -31,3 +31,7 @@ ul.navbar-nav {
 .cards-inner {
     margin-left: 30px;
 }
+.action-buttons {
+    padding: 20px;
+    list-style: none;
+}
