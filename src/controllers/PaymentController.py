@@ -207,7 +207,7 @@ def verify_payment():
                         current_user.save()
                     
                     
-                    return render_template('response.html', home=url_for('user.payment_view'))
+                    return response
                 else:
                     flash('Not enough funds to cover the transaction')
                     return redirect('user.payment_view')
