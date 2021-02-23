@@ -27,6 +27,7 @@ class AllVendorsView(MethodView):
     """ Fetch all vendors"""
     
     def get(self):
+        """ get request to call vendors method"""
         return AdminController.vendors()
     
     
@@ -34,7 +35,7 @@ class SettlementsView(MethodView):
     """ Fetch all settlements"""
     
     def get(self):
-        """ get request to call settlements method"""
+        """get request to call settlements method"""
         return AdminController.settlements()
     
     
