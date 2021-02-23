@@ -81,3 +81,16 @@ def vendors():
         return response
     except Exception:
         pass
+    
+    
+def settlements():
+    """ Fetch all settlements per day"""
+    
+    try:
+        settlementsUrl = '{}/settlements'.format(BaseUrl)
+        resp = requests.get(settlementsUrl, headers=headers)
+        response = resp.json()
+        
+        return response
+    except Exception:
+        pass
