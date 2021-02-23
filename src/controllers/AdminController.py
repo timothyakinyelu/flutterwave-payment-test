@@ -78,6 +78,6 @@ def vendors():
         resp = requests.get(subUrl, headers=headers)
         response = resp.json()
         
-        return render_template('subaccounts.html', data=response['data'])
+        return response
     except Exception:
         pass
