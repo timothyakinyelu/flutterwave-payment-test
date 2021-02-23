@@ -34,7 +34,8 @@ class SettlementsView(MethodView):
     """ Fetch all settlements"""
     
     def get(self):
-        pass
+        """ get request to call settlements method"""
+        return AdminController.settlements()
     
     
 # define API resources
